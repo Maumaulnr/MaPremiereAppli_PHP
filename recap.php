@@ -39,7 +39,8 @@ session_start();
                             "</tr>",
                         "</thead>",
                         "<tbody>";
-                
+                $totalGeneral = 0;
+
                 //   boucle  itérative foreach() de  PHP,  particulièrement  efficace pour exécuter, produit par produit, les mêmes instructions qui vont permettre l'affichage uniforme  de  chacun  d'entre  eux.  Pour  chaque  donnée  dans $_SESSION['products'],  nous disposerons au sein de la boucle de deux variables :
                 // $index:  aura  pour  valeur  l'index  du  tableau $_SESSION['products']parcouru.  Nous pourrons numéroter ainsi chaque produit avec ce numéro dans le tableau HTML (en première colonne).
                 // $product: cette variable contiendra le produit, sous forme de tableau, tel que l'a créé et stocké en session le fichier traitement.php.
@@ -54,8 +55,13 @@ session_start();
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp</td>",
                         "</tr>";
+                    $totalGeneral += $product['total'];
                 }
-                echo "</tbody>",
+                echo "<tr>",
+                        "<td colspan=4>Total général</td>",
+                        "<td><strong>".number_format($totalGeneral, 2, ",", "&nbsp"). "&nbsp;€</strong></td>",
+                    "</tr>",
+                        "</tbody>",
                     "</table>";
             }
         ?>
