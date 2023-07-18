@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 10%;
+    background-color: darkgoldenrod;
+}
+
+/* Menu */
+
+.navbar {
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.nav-item {
+    list-style: none;
+}
+
+.nav-item > a {
+    text-decoration: none;
+    font-size: 1.1em;
+    color: black;
+    text-transform: uppercase;
+}
+
+/* Titre */
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Formulaire */
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2em;
+}
+
+form input:not(.submit-btn) {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    width: 60%;
+}
+
+/* Retirer la bordure interne quand on écrit */
+form input:focus-visible {
+    outline: none;
+}
+
+.submit-btn {
+    padding: 5px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+}
+
+/* recap.php */
+
+table {
+    background-color: darkgrey;
+    border-radius: 3px;
+    margin: 10px;
+    padding: 10px;
+}
+
+
+
+
+

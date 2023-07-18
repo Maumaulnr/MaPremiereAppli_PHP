@@ -4,6 +4,8 @@ sessions : https://www.php.net/manual/fr/intro.session.php
 filtres : https://www.php.net/manual/fr/filter.filters.php
 -->
 
+<!-- Faire en sorte que le fichier traitement.php, lorsqu'il retourne au formulaire, créé un message (d'erreur ou de succès, selon le cas de figure) et permettre à index.php de l'afficher. -->
+
 <?php
 
 // session_start() crée une session ou restaure celle trouvée sur le serveur, via l'identifiant de session passé dans une requête GET, POST ou par un cookie.
@@ -15,13 +17,13 @@ session_start();
 if(isset($_POST['submit'])) {
 
     // FILTER_SANITIZE_STRING(champ   "name")   :   ce   filtre   supprime   unechaîne   de caractères  de  toute  présence  de  caractères  spéciaux  et  de  toute  balise  HTML potentielle ou les encode. Pas d'injection de code HTML possible !
-    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // FILTER_VALIDATE_FLOAT(champ  "price")  :  validera  le  prix  que  s'il  est  un  nombre  à virgule  (pas  de  texte ou autre...), le drapeau FILTER_FLAG_ALLOW_FRACTIONest ajouté pour permettre l'utilisation du caractère "," ou "." pour la décimale.
     $price = filter_input(INPUT_POST, "price", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
     // FILTER_VALIDATE_INT(champ  "qtt")  :  ne  validera  la  quantité  que  si  celle-ci  est  un nombre entier, au moins égal à 1.
-    $qtt = filter_input(INPUT_POST, "qtt", FILTER_SANITIZE_INT);
+    $qtt = filter_input(INPUT_POST, "qtt", FILTER_VALIDATE_INT);
 
     if($name && $price && $qtt) {
 
@@ -38,6 +40,9 @@ if(isset($_POST['submit'])) {
         // Les deux crochets "[]"2sont un raccourci pour indiquer à cet emplacement que nous ajoutons  une  nouvelle  entrée  au  futur  tableau  "products"  associé  à  cette  clé. $_SESSION["products"] doit être lui aussi un tableau afin d'y stocker de nouveaux produits par la suite.
         $_SESSION['products'][] = $product;
     }
+
+    // Faire en sorte que le fichier traitement.php, lorsqu'il retourne au formulaire, créé un message (d'erreur ou de succès, selon le cas de figure) et permettre à index.php de l'afficher.
+    
 
 }
 

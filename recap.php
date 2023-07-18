@@ -17,8 +17,32 @@ session_start();
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Récapitulatif des produits</title>
+
+        <link rel="stylesheet" href="./CSS/main.css">
     </head>
     <body>
+
+    <!-- Permettre à l'utilisateur d'aller sur la page recap.php ou index.php à tout moment, dans un menu. -->
+
+        <!-- Menu de navigation -->
+        <nav class="navbar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.php">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="recap.php">Récapitulatif</a>
+                </li>
+            </ul>
+        </nav>
+
+    <!-- 
+        Ajouter trois fonctionnalités utiles dans recap.php :
+             Supprimer un produit en session (selon le choix de l'utilisateur).
+             Supprimer tous les produits en session en une seule fois.
+             Modifier les quantités de chaque produit grâce à deux boutons "+" et "-" positionnés de part et d'autre du nombre dans la cellule. 
+    -->
+
         <?php 
             // Nous rajoutons une condition qui vérifie : 
             // Soit la clé "products" du tableau de session $_SESSIONn'existe pas : !isset()
@@ -30,7 +54,7 @@ session_start();
             else {
                 echo "<table>",
                         "<thead>",
-                            "<tr>,"
+                            "<tr>",
                                 "<th>#</th>",
                                 "<th>Nom</th>",
                                 "<th>Prix</th>",
@@ -55,6 +79,7 @@ session_start();
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp</td>",
                         "</tr>";
+                    // À l'intérieur de la boucle, grâce à l'opérateur combiné +=, on ajoute le total du produit parcouru à la valeur de $totalGeneral, qui augmente d'autant pour chaque produit.
                     $totalGeneral += $product['total'];
                 }
                 echo "<tr>",
