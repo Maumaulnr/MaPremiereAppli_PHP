@@ -19,7 +19,7 @@ if(isset($_POST['submit'])) {
     // FILTER_SANITIZE_STRING(champ   "name")   :   ce   filtre   supprime   unechaîne   de caractères  de  toute  présence  de  caractères  spéciaux  et  de  toute  balise  HTML potentielle ou les encode. Pas d'injection de code HTML possible !
     $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // FILTER_VALIDATE_FLOAT(champ  "price")  :  validera  le  prix  que  s'il  est  un  nombre  à virgule  (pas  de  texte ou autre...), le drapeau FILTER_FLAG_ALLOW_FRACTIONest ajouté pour permettre l'utilisation du caractère "," ou "." pour la décimale.
+    // FILTER_VALIDATE_FLOAT(champ  "price")  :  validera  le  prix  que  s'il  est  un  nombre  à virgule  (pas  de  texte ou autre...), le drapeau FILTER_FLAG_ALLOW_FRACTION est ajouté pour permettre l'utilisation du caractère "," ou "." pour la décimale.
     $price = filter_input(INPUT_POST, "price", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
     // FILTER_VALIDATE_INT(champ  "qtt")  :  ne  validera  la  quantité  que  si  celle-ci  est  un nombre entier, au moins égal à 1.

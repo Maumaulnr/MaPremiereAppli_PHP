@@ -19,6 +19,7 @@ session_start();
         <title>Récapitulatif des produits</title>
 
         <link rel="stylesheet" href="./CSS/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
 
@@ -44,13 +45,32 @@ session_start();
     -->
 
         <?php 
+
+            // On vérifie si le formulaire de suppression a été soumis.
+            // Cette partie doit être en haut du code sinon il faut cliquer deux fois pour supprimer un article.
+            // Permet de s'assurer que l'utilisateur a bien cliqué sur le bouton supprimé pour supprimer un produit précis.
+            // Grâce à $_POST on peut récupérer la valeur $_POST['index'] qui correspond à la clé du produit que l'utilisateur souhaite supprimer.
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
+                $index = $_POST['index'];
+
+                // Supprimer l'article
+                // isset : Détermine si une variable est déclarée
+                // On vérifie que le produit existe
+                if(isset($_SESSION['products'][$index])) {
+                    // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
+                    // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
+                    unset($_SESSION['products'][$index]);
+                }
+            }
+
             // Nous rajoutons une condition qui vérifie : 
-            // Soit la clé "products" du tableau de session $_SESSIONn'existe pas : !isset()
+            // Soit la clé "products" du tableau de session $_SESSION n'existe pas : !isset()
             // Soit cette clé existe mais ne contient aucune donnée : empty()
-            // Dans  ces  deux  cas,  nous  afficherons  à  l'utilisateur  un  message  le  prévenant  qu'aucun produit   n'existe   en session.   Il   ne   nous   reste   plus   qu'àafficher   le   contenu   de $_SESSION['products'] dans la partie elsede notre condition.
+            // Dans  ces  deux  cas,  nous  afficherons  à  l'utilisateur  un  message  le  prévenant  qu'aucun produit   n'existe   en session.   Il   ne   nous   reste   plus   qu'à afficher   le   contenu   de $_SESSION['products'] dans la partie else de notre condition.
             if(!isset($_SESSION['products']) || empty($_SESSION['products'])) {
                 echo "<p>Aucun produit en session ...</p>";
             }
+            // sinon afficher le tableau des produits
             else {
                 echo "<table>",
                         "<thead>",
@@ -60,6 +80,7 @@ session_start();
                                 "<th>Prix</th>",
                                 "<th>Quantité</th>",
                                 "<th>Total</th>",
+                                "<th>Supprimer article</th>",
                             "</tr>",
                         "</thead>",
                         "<tbody>";
@@ -78,6 +99,15 @@ session_start();
                             "<td>".$product['qtt'] ."</td>",
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp</td>",
+                            // Créer un input permettant de supprimer un article
+                            "<td>",
+                                "<form method='post' action='recap.php'>",
+                                    "<input type='hidden' name='index' value='" . $index. "'>",
+                                    "<button type='submit' name='delete_product'>",
+                                        "<i class='fa-solid fa-trash-can'></i>",
+                                    "</button>",
+                                "</form>",
+                            "</td>",
                         "</tr>";
                     // À l'intérieur de la boucle, grâce à l'opérateur combiné +=, on ajoute le total du produit parcouru à la valeur de $totalGeneral, qui augmente d'autant pour chaque produit.
                     $totalGeneral += $product['total'];
@@ -88,6 +118,14 @@ session_start();
                     "</tr>",
                         "</tbody>",
                     "</table>";
+
+                // Afficher le nombre de produits présents en session
+                // Chaque fois qu'un produit est entré dans le formulaire, on affiche le nombre de produits présent
+                $numberOfProducts = count($_SESSION['products']);
+                // Le message ne s'affichera que si le nombre de produits est supérieur à 0
+                if($numberOfProducts > 0) {
+                    echo "Nombre de produits en session : " . $numberOfProducts;
+                }
             }
         ?>
     </body>

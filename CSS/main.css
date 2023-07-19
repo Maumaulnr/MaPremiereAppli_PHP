@@ -38,6 +38,11 @@ body {
     text-transform: uppercase;
 }
 
+/* Au survol avec la souris, afficher la souligne */
+.nav-item > a:hover {
+    text-decoration: underline;
+}
+
 /* Titre */
 
 h1 {
@@ -67,11 +72,11 @@ form label {
 
 form input:not(.submit-btn) {
     margin-bottom: 10px;
+    width: 60%;
     font-size: 1.1em;
     text-align: center;
     border: none;
     border-radius: 4px;
-    width: 60%;
 }
 
 /* Retirer la bordure interne quand on écrit */
@@ -80,21 +85,29 @@ form input:focus-visible {
 }
 
 .submit-btn {
-    padding: 5px;
     margin-bottom: 20px;
+    padding: 5px;
+    background-color: #009688;
     font-size: 1.1em;
     text-align: center;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 /* recap.php */
 
 table {
-    background-color: darkgrey;
-    border-radius: 3px;
     margin: 10px;
     padding: 10px;
+    background-color: #009688;
+    border-radius: 5px;
+}
+
+.fa-trash-can {
+    font-size: 1.5em;
+    color: black;
+    cursor: pointer;
 }
 
 

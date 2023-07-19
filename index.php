@@ -73,16 +73,23 @@
             // Afficher le nombre de produits présents en session
             // Chaque fois qu'un produit est entré dans le formulaire, on affiche le nombre de produits présent
             $numberOfProducts = count($_SESSION['products']);
-            echo "Nombre de produits en session : " . $numberOfProducts;
+            // Le message ne s'affichera que si le nombre de produits est supérieur à 0
+            if($numberOfProducts > 0) {
+                echo "Nombre de produits en session : " . $numberOfProducts;
+            }
 
             // Faire en sorte que le fichier traitement.php, lorsqu'il retourne au formulaire, créé un message (d'erreur ou de succès, selon le cas de figure) et permettre à index.php de l'afficher.
             // Vérifier si un message est stocké dans la session
-            if (isset($_SESSION['message'])) {
-                // Afficher le message
-                echo $_SESSION['message'];
-                
-                // Effacer le message de la session
-                unset($_SESSION['message']);
+            // Nous rajoutons une condition qui vérifie : 
+            // Soit la clé "succes" du tableau de session $_SESSION n'existe pas : !isset()
+            // Soit cette clé existe mais ne contient aucune donnée : empty()
+            // Dans  ces  deux  cas,  nous  afficherons à l'utilisateur  un  message  le  prévenant  qu'aucun produit n'est présent. Il ne nous reste plus qu'à afficher le message de $_SESSION['succes'] dans la partie else de notre condition.
+            if(!isset($_SESSION['succes']) || empty($_SESSION['succes'])) {
+                $_SESSION['succes'] = "<p> Ajouter un produit </p>";
+            }
+            // sinon afficher les produits
+            else {
+                echo $_SESSION['succes'];
             }
         ?>
         
