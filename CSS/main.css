@@ -38,9 +38,9 @@ body {
     text-transform: uppercase;
 }
 
-/* Au survol avec la souris, afficher la souligne */
+/* Au survol avec la souris, afficher le background */
 .nav-item > a:hover {
-    text-decoration: underline;
+    background-color: #009688;
 }
 
 /* Titre */
@@ -102,6 +102,8 @@ table {
     padding: 10px;
     background-color: #009688;
     border-radius: 5px;
+    /* border-collapse: collapse; */
+    border: 1px solid grey;
 }
 
 .fa-trash-can {
@@ -109,6 +111,33 @@ table {
     color: black;
     cursor: pointer;
 }
+
+td {
+    padding: 17px;
+    border: 2px solid grey;
+}
+
+.decrease-btn, .increase-btn {
+    padding: 2px 5px;
+    border: none;
+    border-radius: 20%;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.qtt-form {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    font-size: 1.5em;
+}
+
+/* Bouton supprimer : pas de background et pas de border */
+.delete {
+    background-color: transparent;
+    border: none;
+}
+
 
 
 

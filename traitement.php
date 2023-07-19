@@ -11,6 +11,39 @@ filtres : https://www.php.net/manual/fr/filter.filters.php
 // session_start() crée une session ou restaure celle trouvée sur le serveur, via l'identifiant de session passé dans une requête GET, POST ou par un cookie.
 session_start();
 
+// On vérifie si une action à modifier la quantité
+if (isset($_GET['index']) && isset($_GET['change_number'])) {
+    $index = $_GET['index'];
+    $change = $_GET['change_number'];
+
+    // On vérifie si le produit existe dans la session
+    if (isset($_SESSION['products'][$index])) {
+        $product = $_SESSION['products'][$index];
+
+        // On fait en sorte de pouvoir modifier la quantité en fonction du bouton sur lequel on appuie à savoir - ou + suivant si l'on veut diminuer la qtt ou ajouter une qtt
+        // Donc si on change en appuyant sur -
+        if ($change === '-') {
+            // On diminue
+            $product['qtt']--;
+        // Sinon si on appuie sur +
+        } elseif ($change === '+') {
+            // alors on ajoute
+            $product['qtt']++;
+        }
+
+        // On vérifie si la qtt est <= 0
+        if($product['qtt'] <= 0) {
+            // alors on supprime le produit s'il n'y a plus de qtt
+            unset($_SESSION['products'][$index]);
+        } else {
+            // On met à jour le prix et le total pour que tout s'ajuste correctement en fonction de la qtt
+        }
+    }
+}
+
+
+
+
 // Un utilisateur mal intentionné (ou trop curieux) pourrait atteindre le fichier traitement.php en saisissant directement l'URL de celui-ci dans la barre d'adresse, et ainsi provoquer des erreurs  sur  la  page  qui  lui  présenterait  des  informations  que  nous  ne  souhaitons  pas dévoiler.  
 // Il  faut  donc  limiter  l'accès  à traitement.phppar  les  seules  requêtes  HTTP provenant de la soumission de notreformulaire.
 
@@ -19,10 +52,10 @@ if(isset($_POST['submit'])) {
     // FILTER_SANITIZE_STRING(champ   "name")   :   ce   filtre   supprime   unechaîne   de caractères  de  toute  présence  de  caractères  spéciaux  et  de  toute  balise  HTML potentielle ou les encode. Pas d'injection de code HTML possible !
     $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // FILTER_VALIDATE_FLOAT(champ  "price")  :  validera  le  prix  que  s'il  est  un  nombre  à virgule  (pas  de  texte ou autre...), le drapeau FILTER_FLAG_ALLOW_FRACTION est ajouté pour permettre l'utilisation du caractère "," ou "." pour la décimale.
+    // FILTER_VALIDATE_FLOAT(champ  "price") : validera le prix que  s'il  est  un  nombre  à virgule  (pas  de  texte ou autre...), le drapeau FILTER_FLAG_ALLOW_FRACTION est ajouté pour permettre l'utilisation du caractère "," ou "." pour la décimale.
     $price = filter_input(INPUT_POST, "price", FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-    // FILTER_VALIDATE_INT(champ  "qtt")  :  ne  validera  la  quantité  que  si  celle-ci  est  un nombre entier, au moins égal à 1.
+    // FILTER_VALIDATE_INT(champ  "qtt") : ne validera la quantité que si  celle-ci  est  un nombre entier, au moins égal à 1.
     $qtt = filter_input(INPUT_POST, "qtt", FILTER_VALIDATE_INT);
 
     if($name && $price && $qtt) {

@@ -80,7 +80,6 @@ session_start();
                                 "<th>Prix</th>",
                                 "<th>Quantité</th>",
                                 "<th>Total</th>",
-                                "<th>Supprimer article</th>",
                             "</tr>",
                         "</thead>",
                         "<tbody>";
@@ -99,11 +98,20 @@ session_start();
                             "<td>".$product['qtt'] ."</td>",
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp</td>",
+                            // créer un bouton - pour retirer un article ou + pour ajouter avec une méthode GET pour récupérer les données lorsque l'on clique sur un des boutons
+                            "<td>",
+                                "<form class='qtt-form' method='get' action='traitement.php'>",
+                                    "<input type='hidden' name='index' value'". $index. "'>",
+                                    "<button class='decrease-btn' type='submit' name='change_number' value='-'> - </button>",
+                                    "<span>". $product['qtt']. "</span>",
+                                    "<button class='increase-btn' type='submit' name='change_number' value='+'> + </button>",
+                                "</form>",
+                            "</td>",
                             // Créer un input permettant de supprimer un article
                             "<td>",
                                 "<form method='post' action='recap.php'>",
                                     "<input type='hidden' name='index' value='" . $index. "'>",
-                                    "<button type='submit' name='delete_product'>",
+                                    "<button class='delete' type='submit' name='delete_product'>",
                                         "<i class='fa-solid fa-trash-can'></i>",
                                     "</button>",
                                 "</form>",
