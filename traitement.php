@@ -6,12 +6,20 @@ filtres : https://www.php.net/manual/fr/filter.filters.php
 
 <!-- Faire en sorte que le fichier traitement.php, lorsqu'il retourne au formulaire, créé un message (d'erreur ou de succès, selon le cas de figure) et permettre à index.php de l'afficher. -->
 
+<!-- $_GET : Tableau associatif qui contient des données envoyées par les paramètres d'URL (query string). 
+Par exemple, dans l'URL example.com/page.php?nom=John&age=30, les valeurs de nom et age peuvent être récupérées avec $_GET['nom'] et $_GET['age'].
+$_POST : tableau associatif qui contient les données envoyées par un formulaire HTML avec la méthode POST (<form method="post">).
+Par exemple, si vous avez un formulaire avec un champ <input type="text" name="username">, vous pouvez récupérer la valeur saisie par l'utilisateur avec $_POST['username'].
+-->
+
 <?php
 
 // session_start() crée une session ou restaure celle trouvée sur le serveur, via l'identifiant de session passé dans une requête GET, POST ou par un cookie.
 session_start();
 
-// On vérifie si une action à modifier la quantité
+// On vérifie si une action à modifier la quantité (Requête soumise?)
+// On identifie d'abord le produit que l'utilisateur souhaite modifier (ici la qtt)
+// On indique le type de modification de qtt souhaité par l'utilisateur (augmenter ou diminué)
 if (isset($_GET['index']) && isset($_GET['change_number'])) {
     $index = $_GET['index'];
     $change = $_GET['change_number'];
@@ -37,10 +45,15 @@ if (isset($_GET['index']) && isset($_GET['change_number'])) {
             unset($_SESSION['products'][$index]);
         } else {
             // On met à jour le prix et le total pour que tout s'ajuste correctement en fonction de la qtt
+            $product['total'] = $product['price'] * $product['qtt'];
+            // l'ID index est la partie que l'on met à jour et le tableau $product est le tableau qui contient les infos du produit avec la nouvelle qtt, nouveau prix et nouveau total
+            $_SESSION['products'][$index] = $product;
         }
     }
 }
 
+// On redirige vers la page recap.php pour permettre le bon affichage
+header("Location:recap.php");
 
 
 
