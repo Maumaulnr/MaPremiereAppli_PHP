@@ -50,33 +50,34 @@ session_start();
             // Cette partie doit être en haut du code sinon il faut cliquer deux fois pour supprimer un article.
             // Permet de s'assurer que l'utilisateur a bien cliqué sur le bouton supprimé pour supprimer un produit précis.
             // Grâce à $_POST on peut récupérer la valeur $_POST['index'] qui correspond à la clé du produit que l'utilisateur souhaite supprimer.
-            if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
-                $index = $_POST['index'];
+            // if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
+            //     $index = $_POST['index'];
+            //     // var_dump($index);
 
-                // Supprimer l'article
-                // isset : Détermine si une variable est déclarée
-                // On vérifie que le produit existe
+            //     // Supprimer l'article
+            //     // isset : Détermine si une variable est déclarée
+            //     // On vérifie que le produit existe
+            //     if(isset($_SESSION['products'][$index])) {
+            //         // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
+            //         // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
+            //         unset($_SESSION['products'][$index]);
+            //     }
+            // }
+
+            // supprimer un article
+            // empty : Détermine si une variable est vide
+            if(isset($_POST['delete_product']) && !empty($_POST['delete_product'])){
                 if(isset($_SESSION['products'][$index])) {
-                    // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
-                    // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
                     unset($_SESSION['products'][$index]);
                 }
             }
 
             // Supprimer tous les produits en session
-            if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_all_products'])) {
-                $_SESSION['products'];
-
-                // Supprimer l'article
-                // isset : Détermine si une variable est déclarée
-                // On vérifie que le produit existe
-                if(isset($_SESSION['products'])) {
-                    // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
-                    // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
-                    unset($_SESSION['products']);
+            if(isset($_POST['delete_all_products']) && !empty($_POST['delete_all_products'])){ 
+                foreach($_SESSION['products'] as $index => $product) {
+                    unset($_SESSION['products'][$index]);
                 }
             }
-
 
             // Nous rajoutons une condition qui vérifie : 
             // Soit la clé "products" du tableau de session $_SESSION n'existe pas : !isset()
@@ -118,14 +119,14 @@ session_start();
                                 "<form class='qtt-form' method='get' action='traitement-modify.php'>",
                                     "<input type='hidden' name='index' value'". $index. "'>",
                                     "<button class='decrease-btn' type='submit' name='change_number' value='-'> - </button>",
-                                    "<span>". $product['qtt']. "</span>",
+                                    "<span>". $index. "</span>",
                                     "<button class='increase-btn' type='submit' name='change_number' value='+'> + </button>",
                                 "</form>",
                             "</td>",
                             // Créer un input permettant de supprimer un article
                             "<td>",
                                 "<form method='post' action='recap.php'>",
-                                    "<input type='hidden' name='products' value='" . . "'>",
+                                    "<input type='hidden' name='products' value='" . $index. "'>",
                                     "<button class='delete' type='submit' name='delete_product'>",
                                         "<i class='fa-solid fa-trash-can'></i>",
                                     "</button>",
@@ -135,6 +136,7 @@ session_start();
                     // À l'intérieur de la boucle, grâce à l'opérateur combiné +=, on ajoute le total du produit parcouru à la valeur de $totalGeneral, qui augmente d'autant pour chaque produit.
                     $totalGeneral += $product['total'];
                 }
+                
                 echo "<tr>",
                         "<td colspan=4>Total général</td>",
                         "<td><strong>".number_format($totalGeneral, 2, ",", "&nbsp"). "&nbsp;€</strong></td>",
@@ -142,7 +144,7 @@ session_start();
                         // Supprimer tous les index en une fois
                         "<td>",
                             "<form method='post' action='recap.php'>",
-                                "<input type='hidden' name='index' value='" . $index. "'>",
+                                "<input type='hidden' name='products' value='" . $index. "'>",
                                 "<button class='delete' type='submit' name='delete_all_products'>",
                                     "<i class='fa-solid fa-trash-can'></i>",
                                 "</button>",
