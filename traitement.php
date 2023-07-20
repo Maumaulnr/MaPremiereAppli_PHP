@@ -17,45 +17,6 @@ Par exemple, si vous avez un formulaire avec un champ <input type="text" name="u
 // session_start() crée une session ou restaure celle trouvée sur le serveur, via l'identifiant de session passé dans une requête GET, POST ou par un cookie.
 session_start();
 
-// On vérifie si une action à modifier la quantité (Requête soumise?)
-// On identifie d'abord le produit que l'utilisateur souhaite modifier (ici la qtt)
-// On indique le type de modification de qtt souhaité par l'utilisateur (augmenter ou diminué)
-if (isset($_GET['index']) && isset($_GET['change_number'])) {
-    $index = $_GET['index'];
-    $change = $_GET['change_number'];
-
-    // On vérifie si le produit existe dans la session
-    if (isset($_SESSION['products'][$index])) {
-        $product = $_SESSION['products'][$index];
-
-        // On fait en sorte de pouvoir modifier la quantité en fonction du bouton sur lequel on appuie à savoir - ou + suivant si l'on veut diminuer la qtt ou ajouter une qtt
-        // Donc si on change en appuyant sur -
-        if ($change === '-') {
-            // On diminue
-            $product['qtt']--;
-        // Sinon si on appuie sur +
-        } elseif ($change === '+') {
-            // alors on ajoute
-            $product['qtt']++;
-        }
-
-        // On vérifie si la qtt est <= 0
-        if($product['qtt'] <= 0) {
-            // alors on supprime le produit s'il n'y a plus de qtt
-            unset($_SESSION['products'][$index]);
-        } else {
-            // On met à jour le prix et le total pour que tout s'ajuste correctement en fonction de la qtt
-            $product['total'] = $product['price'] * $product['qtt'];
-            // l'ID index est la partie que l'on met à jour et le tableau $product est le tableau qui contient les infos du produit avec la nouvelle qtt, nouveau prix et nouveau total
-            $_SESSION['products'][$index] = $product;
-        }
-    }
-}
-
-// On redirige vers la page recap.php pour permettre le bon affichage
-header("Location:recap.php");
-
-
 
 // Un utilisateur mal intentionné (ou trop curieux) pourrait atteindre le fichier traitement.php en saisissant directement l'URL de celui-ci dans la barre d'adresse, et ainsi provoquer des erreurs  sur  la  page  qui  lui  présenterait  des  informations  que  nous  ne  souhaitons  pas dévoiler.  
 // Il  faut  donc  limiter  l'accès  à traitement.phppar  les  seules  requêtes  HTTP provenant de la soumission de notreformulaire.
@@ -94,6 +55,6 @@ if(isset($_POST['submit'])) {
 
 // redirection grâce à la fonction header(). Il n'y a pas de  "else"  à  la  condition  puisque  dans  tous  les  cas  (formulaire  soumis  ou  non),  nous souhaitons revenir au formulaire après traitement. 
 
-header("Location:index.php");
+header("location:index.php");
 
 ?>

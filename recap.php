@@ -63,6 +63,21 @@ session_start();
                 }
             }
 
+            // Supprimer tous les produits en session
+            if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_all_products'])) {
+                $_SESSION['products'];
+
+                // Supprimer l'article
+                // isset : Détermine si une variable est déclarée
+                // On vérifie que le produit existe
+                if(isset($_SESSION['products'])) {
+                    // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
+                    // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
+                    unset($_SESSION['products']);
+                }
+            }
+
+
             // Nous rajoutons une condition qui vérifie : 
             // Soit la clé "products" du tableau de session $_SESSION n'existe pas : !isset()
             // Soit cette clé existe mais ne contient aucune donnée : empty()
@@ -89,7 +104,7 @@ session_start();
                 // $index:  aura  pour  valeur  l'index  du  tableau $_SESSION['products']parcouru.  Nous pourrons numéroter ainsi chaque produit avec ce numéro dans le tableau HTML (en première colonne).
                 // $product: cette variable contiendra le produit, sous forme de tableau, tel que l'a créé et stocké en session le fichier traitement.php.
                 foreach($_SESSION['products'] as $index => $product) {
-                    // La bouclecréera alors une ligne <tr>et toutes les cellules <td> nécessaires à chaque partie du produit à afficher, et ce pour chaque produit présent en session.
+                    // La boucle créera alors une ligne <tr> et toutes les cellules <td> nécessaires à chaque partie du produit à afficher, et ce pour chaque produit présent en session.
                     echo "<tr>",
                             "<td>".$index ."</td>",
                             "<td>".$product['name'] ."</td>",
@@ -97,10 +112,10 @@ session_start();
                             "<td>".number_format($product['price'], 2, ",", "&nbsp")."&nbsp;€</td>",
                             "<td>".$product['qtt'] ."</td>",
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
-                            "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp</td>",
+                            "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp;€</td>",
                             // créer un bouton - pour retirer un article ou + pour ajouter avec une méthode GET pour récupérer les données lorsque l'on clique sur un des boutons
                             "<td>",
-                                "<form class='qtt-form' method='get' action='traitement.php'>",
+                                "<form class='qtt-form' method='get' action='traitement-modify.php'>",
                                     "<input type='hidden' name='index' value'". $index. "'>",
                                     "<button class='decrease-btn' type='submit' name='change_number' value='-'> - </button>",
                                     "<span>". $product['qtt']. "</span>",
@@ -110,7 +125,7 @@ session_start();
                             // Créer un input permettant de supprimer un article
                             "<td>",
                                 "<form method='post' action='recap.php'>",
-                                    "<input type='hidden' name='index' value='" . $index. "'>",
+                                    "<input type='hidden' name='products' value='" . . "'>",
                                     "<button class='delete' type='submit' name='delete_product'>",
                                         "<i class='fa-solid fa-trash-can'></i>",
                                     "</button>",
@@ -123,6 +138,16 @@ session_start();
                 echo "<tr>",
                         "<td colspan=4>Total général</td>",
                         "<td><strong>".number_format($totalGeneral, 2, ",", "&nbsp"). "&nbsp;€</strong></td>",
+                        // Créer un input permettant de supprimer tous les articles
+                        // Supprimer tous les index en une fois
+                        "<td>",
+                            "<form method='post' action='recap.php'>",
+                                "<input type='hidden' name='index' value='" . $index. "'>",
+                                "<button class='delete' type='submit' name='delete_all_products'>",
+                                    "<i class='fa-solid fa-trash-can'></i>",
+                                "</button>",
+                            "</form>",
+                        "</td>",
                     "</tr>",
                         "</tbody>",
                     "</table>";
