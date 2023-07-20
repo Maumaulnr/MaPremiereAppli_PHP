@@ -46,39 +46,6 @@ session_start();
 
         <?php 
 
-            // On vérifie si le formulaire de suppression a été soumis.
-            // Cette partie doit être en haut du code sinon il faut cliquer deux fois pour supprimer un article.
-            // Permet de s'assurer que l'utilisateur a bien cliqué sur le bouton supprimé pour supprimer un produit précis.
-            // Grâce à $_POST on peut récupérer la valeur $_POST['index'] qui correspond à la clé du produit que l'utilisateur souhaite supprimer.
-            // if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
-            //     $index = $_POST['index'];
-            //     // var_dump($index);
-
-            //     // Supprimer l'article
-            //     // isset : Détermine si une variable est déclarée
-            //     // On vérifie que le produit existe
-            //     if(isset($_SESSION['products'][$index])) {
-            //         // unset : détruit la ou les variables dont le nom a été passé en argument donc ici on veut "détruire" la clé $index ce qui supprimera le reste des informations
-            //         // si le produit existe, on utilise la fonction unset() pour supprimer le produit du tableau
-            //         unset($_SESSION['products'][$index]);
-            //     }
-            // }
-
-            // supprimer un article
-            // empty : Détermine si une variable est vide
-            if(isset($_POST['delete_product']) && !empty($_POST['delete_product'])){
-                if(isset($_SESSION['products'][$index])) {
-                    unset($_SESSION['products'][$index]);
-                }
-            }
-
-            // Supprimer tous les produits en session
-            if(isset($_POST['delete_all_products']) && !empty($_POST['delete_all_products'])){ 
-                foreach($_SESSION['products'] as $index => $product) {
-                    unset($_SESSION['products'][$index]);
-                }
-            }
-
             // Nous rajoutons une condition qui vérifie : 
             // Soit la clé "products" du tableau de session $_SESSION n'existe pas : !isset()
             // Soit cette clé existe mais ne contient aucune donnée : empty()
@@ -125,9 +92,9 @@ session_start();
                             "</td>",
                             // Créer un input permettant de supprimer un article
                             "<td>",
-                                "<form method='post' action='recap.php'>",
-                                    "<input type='hidden' name='products' value='" . $index. "'>",
-                                    "<button class='delete' type='submit' name='delete_product'>",
+                                "<form method='get' action='traitement-modify.php'>",
+                                    "<input type='hidden' name='index' value='" . $index. "'>",
+                                    "<button class='delete' type='submit' name='delete' value='delete_product'>",
                                         "<i class='fa-solid fa-trash-can'></i>",
                                     "</button>",
                                 "</form>",
@@ -143,7 +110,7 @@ session_start();
                         // Créer un input permettant de supprimer tous les articles
                         // Supprimer tous les index en une fois
                         "<td>",
-                            "<form method='post' action='recap.php'>",
+                            "<form method='get' action='recap.php'>",
                                 "<input type='hidden' name='products' value='" . $index. "'>",
                                 "<button class='delete' type='submit' name='delete_all_products'>",
                                     "<i class='fa-solid fa-trash-can'></i>",
@@ -156,10 +123,10 @@ session_start();
 
                 // Afficher le nombre de produits présents en session
                 // Chaque fois qu'un produit est entré dans le formulaire, on affiche le nombre de produits présent
-                $numberOfProducts = count($_SESSION['products']);
-                // Le message ne s'affichera que si le nombre de produits est supérieur à 0
-                if($numberOfProducts > 0) {
-                    echo "Nombre de produits en session : " . $numberOfProducts;
+                if(!isset($_SESSION['products']) || empty($_SESSION['products'])) {
+                    echo "<p>Nombre de produits en session : 0 </p>";
+                } else {
+                    echo "<p>Nombre de produits en session : </p>". count($_SESSION['products']);
                 }
             }
         ?>

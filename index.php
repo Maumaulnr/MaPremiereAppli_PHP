@@ -72,10 +72,10 @@
         <?php
             // Afficher le nombre de produits présents en session
             // Chaque fois qu'un produit est entré dans le formulaire, on affiche le nombre de produits présent
-            $numberOfProducts = count($_SESSION['products']);
-            // Le message ne s'affichera que si le nombre de produits est supérieur à 0
-            if($numberOfProducts > 0) {
-                echo "Nombre de produits en session : " . $numberOfProducts;
+            if(!isset($_SESSION['products']) || empty($_SESSION['products'])) {
+                echo "<p>Aucun produit en session</p>";
+            } else {
+                echo "<p>Nombre de produits en session : </p>". count($_SESSION['products']);
             }
 
             // Faire en sorte que le fichier traitement.php, lorsqu'il retourne au formulaire, créé un message (d'erreur ou de succès, selon le cas de figure) et permettre à index.php de l'afficher.
