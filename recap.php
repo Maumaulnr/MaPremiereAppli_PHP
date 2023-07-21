@@ -77,20 +77,28 @@ session_start();
                             "<td>".$index ."</td>",
                             "<td>".$product['name'] ."</td>",
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
+                            // ici on souhaite formater le prix
+                            // 2 : Nombre de décimales que nous souhaitons afficher après la virgule
+                            // "&nbsp;" :  C'est le caractère que nous souhaitons utiliser comme séparateur de décimales. Dans ce cas, nous utilisons un espace insécable (&nbsp;) comme séparateur de décimales.
+                            // Par exemple, si $product['price'] est égal à 12345.67, la fonction number_format() retournera "12 345,67".
                             "<td>".number_format($product['price'], 2, ",", "&nbsp")."&nbsp;€</td>",
                             "<td>".$product['qtt'] ."</td>",
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             "<td>".number_format($product['total'], 2, ",", "&nbsp")."&nbsp;€</td>",
+
                             // créer un bouton - pour retirer un article ou + pour ajouter avec une méthode GET pour récupérer les données lorsque l'on clique sur un des boutons
                             "<td>",
                                 "<form class='qtt-form' method='get' action='traitement-modify.php'>",
-                                    "<input type='hidden' name='index' value'". $index. "'>",
-                                    "<button class='decrease-btn' type='submit' name='change_number' value='-'> - </button>",
-                                    "<span>". $index. "</span>",
-                                    "<button class='increase-btn' type='submit' name='change_number' value='+'> + </button>",
+                                    "<input type='hidden' name='index' value='". $index. "'>",
+                                    // on retire une qtt
+                                    "<button class='decrease-btn' type='submit' name='change_number' value='change_quantity'>&nbsp; -&nbsp </button>",
+                                    "<span>". $product['qtt']. "</span>",
+                                    // On ajoute une qtt
+                                    "<button class='increase-btn' type='submit' name='change_number' value='change_quantity'>&nbsp; +&nbsp </button>",
                                 "</form>",
                             "</td>",
-                            // Créer un input permettant de supprimer un article
+
+                            // Créer un bouton permettant de supprimer un article
                             "<td>",
                                 "<form method='get' action='traitement-modify.php'>",
                                     "<input type='hidden' name='index' value='" . $index. "'>",
@@ -107,12 +115,13 @@ session_start();
                 echo "<tr>",
                         "<td colspan=4>Total général</td>",
                         "<td><strong>".number_format($totalGeneral, 2, ",", "&nbsp"). "&nbsp;€</strong></td>",
-                        // Créer un input permettant de supprimer tous les articles
+                        
+                        // Créer un bouton permettant de supprimer tous les articles
                         // Supprimer tous les index en une fois
                         "<td>",
-                            "<form method='get' action='recap.php'>",
-                                "<input type='hidden' name='products' value='" . $index. "'>",
-                                "<button class='delete' type='submit' name='delete_all_products'>",
+                            "<form method='get' action='traitement-modify.php'>",
+                                "<input type='hidden' name='index' value='" . $index. "'>",
+                                "<button class='delete' type='submit' name='delete' value='delete_all_products'>",
                                     "<i class='fa-solid fa-trash-can'></i>",
                                 "</button>",
                             "</form>",
