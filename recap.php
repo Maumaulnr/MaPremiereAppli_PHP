@@ -79,7 +79,7 @@ session_start();
                             // Pour que les prix s'affichent sous un format monétaire plus lisible
                             // ici on souhaite formater le prix
                             // 2 : Nombre de décimales que nous souhaitons afficher après la virgule
-                            // "&nbsp;" :  C'est le caractère que nous souhaitons utiliser comme séparateur de décimales. Dans ce cas, nous utilisons un espace insécable (&nbsp;) comme séparateur de décimales.
+                            // "&nbsp;" :  C'est le caractère que nous souhaitons utiliser comme séparateur de décimales. Dans ce cas, nous utilisons un espace insécable (&nbsp;) comme séparateur de décimales. En résumé, l'utilisation de l'espace insécable dans cet exemple est une astuce pour maintenir la mise en page et l'alignement, garantissant une meilleure expérience utilisateur.
                             // Par exemple, si $product['price'] est égal à 12345.67, la fonction number_format() retournera "12 345,67".
                             "<td>".number_format($product['price'], 2, ",", "&nbsp")."&nbsp;€</td>",
                             "<td>".$product['qtt'] ."</td>",
@@ -91,10 +91,10 @@ session_start();
                                 "<form class='qtt-form' method='get' action='traitement-modify.php'>",
                                     "<input type='hidden' name='index' value='". $index. "'>",
                                     // on retire une qtt
-                                    "<button class='decrease-btn' type='submit' name='change_number' value='change_quantity'>&nbsp; -&nbsp </button>",
+                                    "<button class='decrease-btn' type='submit' name='change-number' value='change-quantity-substract'> - </button>",
                                     "<span>". $product['qtt']. "</span>",
                                     // On ajoute une qtt
-                                    "<button class='increase-btn' type='submit' name='change_number' value='change_quantity'>&nbsp; +&nbsp </button>",
+                                    "<button class='increase-btn' type='submit' name='change-number' value='change-quantity-add'> + </button>",
                                 "</form>",
                             "</td>",
 
@@ -102,7 +102,7 @@ session_start();
                             "<td>",
                                 "<form method='get' action='traitement-modify.php'>",
                                     "<input type='hidden' name='index' value='" . $index. "'>",
-                                    "<button class='delete' type='submit' name='delete' value='delete_product'>",
+                                    "<button class='delete' type='submit' name='delete' value='delete-product'>",
                                         "<i class='fa-solid fa-trash-can'></i>",
                                     "</button>",
                                 "</form>",
@@ -115,13 +115,13 @@ session_start();
                 echo "<tr>",
                         "<td colspan=4>Total général</td>",
                         "<td><strong>".number_format($totalGeneral, 2, ",", "&nbsp"). "&nbsp;€</strong></td>",
-                        
+
                         // Créer un bouton permettant de supprimer tous les articles
                         // Supprimer tous les index en une fois
                         "<td>",
                             "<form method='get' action='traitement-modify.php'>",
                                 "<input type='hidden' name='index' value='" . $index. "'>",
-                                "<button class='delete' type='submit' name='delete' value='delete_all_products'>",
+                                "<button class='delete' type='submit' name='delete' value='delete-all-products'>",
                                     "<i class='fa-solid fa-trash-can'></i>",
                                 "</button>",
                             "</form>",
